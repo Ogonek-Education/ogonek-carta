@@ -6,7 +6,6 @@ on:
       - master
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
@@ -19,7 +18,7 @@ jobs:
         with:
           version: 9
 
-      - name: Install dependendencies
+      - name: Install dependencies
         run: pnpm i
 
       - name: Build project
@@ -52,7 +51,7 @@ jobs:
         with:
           version: 9
 
-      - name: Install dependendencies
+      - name: Install dependencies
         run: pnpm i
 
       - name: Build all packages
@@ -62,5 +61,3 @@ jobs:
         run: npm run publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: 'npm-token-placeholder' # No longer necessary as using Trusted Publishing.
-          # However it causes issues if removed
