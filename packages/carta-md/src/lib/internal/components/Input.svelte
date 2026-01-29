@@ -6,7 +6,6 @@
 
 <script lang="ts">
 	import type { Carta } from '../carta';
-	import type { UIEventHandler } from 'svelte/elements';
 	import type { TextAreaProps } from '../textarea-props';
 	import { onMount, type Snippet } from 'svelte';
 	import { debounce } from '../utils';
@@ -42,7 +41,6 @@
 		 * Highlight delay in milliseconds.
 		 */
 		highlightDelay: number;
-		onscroll: UIEventHandler<HTMLDivElement>;
 		children: Snippet;
 	}
 
@@ -53,7 +51,6 @@
 		elem = $bindable(),
 		props: textareaProps = {},
 		hidden = false,
-		onscroll,
 		children,
 		highlightDelay
 	}: Props = $props();
@@ -230,7 +227,6 @@
 	style="display: {hidden ? 'none' : 'unset'};"
 	onclick={focus}
 	onkeydown={focus}
-	{onscroll}
 	bind:this={elem}
 >
 	<div class="carta-input-wrapper" bind:this={wrapperElem}>

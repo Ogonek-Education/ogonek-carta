@@ -6,7 +6,6 @@
 
 <script lang="ts">
 	import type { Carta } from '../carta';
-	import type { UIEventHandler } from 'svelte/elements';
 	import { onMount, type Snippet } from 'svelte';
 	import { debounce } from '../utils';
 
@@ -28,8 +27,7 @@
 		 */
 		hidden?: boolean;
 		children?: Snippet;
-		onscroll: UIEventHandler<HTMLDivElement>;
-		onrender: () => void;
+		onrender?: () => void;
 	}
 
 	let {
@@ -38,7 +36,6 @@
 		elem = $bindable(),
 		hidden = false,
 		children,
-		onscroll,
 		onrender
 	}: Props = $props();
 
@@ -52,7 +49,7 @@
 			.then((rendered) => {
 				htmlContainer!.innerHTML = rendered;
 			})
-			.then(() => onrender());
+			.then(() => onrender?.());
 	}, carta.rendererDebounce ?? 300);
 
 	const onValueChange = (value: string) => {
@@ -73,7 +70,6 @@
 	class="carta-renderer markdown-body"
 	style="display: {hidden ? 'none' : 'unset'};"
 	bind:this={elem}
-	{onscroll}
 >
 	<div bind:this={htmlContainer} style="display: contents;">
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->

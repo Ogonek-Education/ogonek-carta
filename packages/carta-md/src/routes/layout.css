@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@source '../../node_modules/@ogonek-education/ogonek-m3';
+@import '@ogonek-education/ogonek-m3/styles';
+@import '@ogonek-education/ogonek-m3/theme/light';
+@import '@ogonek-education/ogonek-m3/theme/dark';
+
+@theme {
+	--font-sans: 'Inter', 'Roboto Flex', system-ui, sans-serif;
+	--font-serif: 'Old Standard TT', 'PT Serif', serif;
+	--font-mono: 'IBM Plex Mono', monospace;
+	--default-transition-duration: var(--md-sys-motion-duration-spatial);
+	--default-transition-timing-function: var(--md-sys-motion-timing-function-emphasized-decel);
+
+	html {
+		font-optical-sizing: auto;
+	}
+}

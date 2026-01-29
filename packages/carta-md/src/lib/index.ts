@@ -11,7 +11,3 @@ export * from '$lib/internal/highlight';
 export * from '$lib/internal/textarea-props';
 export * from '$lib/internal/labels';
 export * from './default.css?inline';
-
-// Legacy
-export { default as CartaEditor } from '$lib/MarkdownEditor.svelte';
-export { default as CartaViewer } from '$lib/Markdown.svelte';
