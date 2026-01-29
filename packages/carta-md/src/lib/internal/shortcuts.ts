@@ -1,4 +1,13 @@
+import { BROWSER } from 'esm-env';
 import type { InputEnhancer } from './input';
+
+const isMacOS = BROWSER
+	? /mac|iphone|ipad|ipod/i.test(
+			navigator.userAgentData?.platform ?? navigator.platform ?? ''
+		)
+	: false;
+
+const primaryModifierKey = isMacOS ? 'meta' : 'control';
 
 /**
  * Keyboard shortcut data.
@@ -28,25 +37,25 @@ export const defaultKeyboardShortcuts = [
 	// Bold text
 	{
 		id: 'bold',
-		combination: new Set(['control', 'b']),
+		combination: new Set([primaryModifierKey, 'b']),
 		action: (input) => input.toggleSelectionSurrounding('**')
 	},
 	// Italic text
 	{
 		id: 'italic',
-		combination: new Set(['control', 'i']),
+		combination: new Set([primaryModifierKey, 'i']),
 		action: (input) => input.toggleSelectionSurrounding('*')
 	},
 	// Quote
 	{
 		id: 'quote',
-		combination: new Set(['control', 'shift', ',']),
+		combination: new Set([primaryModifierKey, 'shift', ',']),
 		action: (input) => input.toggleLinePrefix('>')
 	},
 	// Link
 	{
 		id: 'link',
-		combination: new Set(['control', 'k']),
+		combination: new Set([primaryModifierKey, 'k']),
 		action: (input) => {
 			input.toggleSelectionSurrounding(['[', ']']);
 			const position = input.getSelection().end + 1;
@@ -57,19 +66,19 @@ export const defaultKeyboardShortcuts = [
 	// Strikethrough
 	{
 		id: 'strikethrough',
-		combination: new Set(['control', 'shift', 'x']),
+		combination: new Set([primaryModifierKey, 'shift', 'x']),
 		action: (input) => input.toggleSelectionSurrounding('~~')
 	},
 	// Code
 	{
 		id: 'code',
-		combination: new Set(['control', 'e']),
+		combination: new Set([primaryModifierKey, 'e']),
 		action: (input) => input.toggleSelectionSurrounding('`')
 	},
 	// Undo
 	{
 		id: 'undo',
-		combination: new Set(['control', 'z']),
+		combination: new Set([primaryModifierKey, 'z']),
 		preventSave: true,
 		action: (input) => {
 			const previousState = input.history.undo();
@@ -82,7 +91,7 @@ export const defaultKeyboardShortcuts = [
 	// Redo
 	{
 		id: 'redo',
-		combination: new Set(['control', 'y']),
+		combination: new Set([primaryModifierKey, 'y']),
 		preventSave: true,
 		action: (input) => {
 			const successiveValue = input.history.redo();
