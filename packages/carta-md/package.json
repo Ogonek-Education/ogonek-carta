@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/BearToCode/carta.git"
+		"url": "git+https://github.com/@Ogonek-Education/ogonek-carta.git"
 	},
 	"exports": {
 		".": {
@@ -31,22 +31,24 @@
 		"@sveltejs/kit": "catalog:",
 		"@sveltejs/package": "catalog:",
 		"@sveltejs/vite-plugin-svelte": "catalog:",
-		"@types/diff": "^5.2.1",
+		"@types/node": "^25.1.0",
 		"svelte": "catalog:",
 		"svelte-check": "catalog:",
+		"tailwindcss": "^4.1.18",
 		"tslib": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:"
 	},
 	"type": "module",
 	"dependencies": {
-		"diff": "^5.2.0",
-		"esm-env": "^1.0.0",
-		"rehype-stringify": "^10.0.0",
-		"remark-gfm": "^4.0.0",
+		"@ogonek-education/ogonek-m3": "^0.0.32",
+		"diff": "^8.0.3",
+		"esm-env": "^1.2.2",
+		"rehype-stringify": "^10.0.1",
+		"remark-gfm": "^4.0.1",
 		"remark-parse": "^11.0.0",
-		"remark-rehype": "^11.1.0",
-		"shiki": "^3.4.0",
+		"remark-rehype": "^11.1.2",
+		"shiki": "^3.21.0",
 		"unified": "^11.0.5"
 	},
 	"keywords": [
