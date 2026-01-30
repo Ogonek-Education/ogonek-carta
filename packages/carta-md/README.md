@@ -74,10 +74,8 @@ Differently from most editors, Carta does not include a code editor, but it is _
 
 # Getting started
 
-> **WARNING**
-> Sanitization is not dealt with by Carta. You need to provide a `sanitizer` in the options.
-> Common sanitizers are [isomorphic-dompurify](https://www.npmjs.com/package/isomorphic-dompurify) (suggested) and [sanitize-html](https://www.npmjs.com/package/sanitize-html).
-> Checkout the documentation for an example.
+> **NOTE**
+> HTML output is sanitized by default via rehype-sanitize using the default schema.
 
 ## Installation
 
@@ -101,10 +99,7 @@ npm i @cartamd/plugin-name
 	// Component default theme
 	import 'carta-md/default.css';
 
-	const carta = new Carta({
-		// Remember to use a sanitizer to prevent XSS attacks
-		// sanitizer: mySanitizer
-	});
+	const carta = new Carta();
 
 	let value = $state('');
 </script>

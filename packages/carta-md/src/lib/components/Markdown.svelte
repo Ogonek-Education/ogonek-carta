@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Carta } from './internal/carta';
+	import type { Carta } from '../internal/carta';
 
 	interface Props {
 		/**

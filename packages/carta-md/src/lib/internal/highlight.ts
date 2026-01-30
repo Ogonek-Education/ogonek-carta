@@ -77,9 +77,9 @@ export type HighlighterOptions = {
 	shiki?: ShikiOptions;
 };
 
-type CustomMarkdownLangName = Awaited<(typeof import('./assets/markdown'))['default']['name']>;
-type DefaultLightThemeName = Awaited<(typeof import('./assets/theme-light'))['default']['name']>;
-type DefaultDarkThemeName = Awaited<(typeof import('./assets/theme-dark'))['default']['name']>;
+type CustomMarkdownLangName = Awaited<(typeof import('../assets/markdown'))['default']['name']>;
+type DefaultLightThemeName = Awaited<(typeof import('../assets/theme-light'))['default']['name']>;
+type DefaultDarkThemeName = Awaited<(typeof import('../assets/theme-dark'))['default']['name']>;
 
 export const customMarkdownLangName: CustomMarkdownLangName = 'cartamd';
 export const defaultLightThemeName: DefaultLightThemeName = 'carta-light';
@@ -91,8 +91,8 @@ export const defaultDarkThemeName: DefaultDarkThemeName = 'carta-dark';
  */
 export async function loadDefaultTheme() {
 	return {
-		light: structuredClone((await import('./assets/theme-light')).default),
-		dark: structuredClone((await import('./assets/theme-dark')).default)
+		light: structuredClone((await import('../assets/theme-light')).default),
+		dark: structuredClone((await import('../assets/theme-dark')).default)
 	} satisfies DualTheme;
 }
 
@@ -142,7 +142,7 @@ export const isThemeRegistration = (theme: Theme): theme is shiki.ThemeRegistrat
  * @returns The language definition with the injected rules.
  */
 export function injectGrammarRules(
-	lang: Awaited<(typeof import('./assets/markdown'))['default']>,
+	lang: Awaited<(typeof import('../assets/markdown'))['default']>,
 	rules: GrammarRule[]
 ) {
 	lang.repository = {
@@ -303,7 +303,7 @@ export async function loadHighlighter(options: HighlighterOptions): Promise<High
 	manager.shikiHighlighter.loadTheme(...(themesToLoad as shiki.ThemeInput[]));
 
 	// Custom markdown language
-	const langDefinition = (await import('./assets/markdown')).default;
+	const langDefinition = (await import('../assets/markdown')).default;
 	const langHash = langAndGrammarHash(langDefinition.name, grammarRules);
 
 	// Check if there is an existing highlighter with the same language and grammar hash

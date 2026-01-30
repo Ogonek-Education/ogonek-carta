@@ -3,6 +3,7 @@ import { unified, type Processor } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm, { type Options as GfmOptions } from 'remark-gfm';
 import remarkRehype, { type Options as RehypeOptions } from 'remark-rehype';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import type { TextAreaHistoryOptions } from './history';
 import { InputEnhancer } from './input';
@@ -109,10 +110,6 @@ export interface Options {
 	 */
 	historyOptions?: TextAreaHistoryOptions;
 	/**
-	 * HTML sanitizer.
-	 */
-	sanitizer: ((html: string) => string) | false;
-	/**
 	 * Highlighter options.
 	 */
 	shikiOptions?: ShikiOptions;
@@ -204,7 +201,6 @@ const USE_HIGHLIGHTER =
 	__ENABLE_CARTA_SSR_HIGHLIGHTER__ === true;
 
 export class Carta {
-	public readonly sanitizer?: (html: string) => string;
 	public readonly historyOptions?: TextAreaHistoryOptions;
 	public readonly theme?: Theme | DualTheme;
 	public readonly shikiOptions?: ShikiOptions;
@@ -266,7 +262,6 @@ export class Carta {
 	}[] = [];
 
 	public constructor(options?: Options) {
-		this.sanitizer = options?.sanitizer || undefined;
 		this.historyOptions = options?.historyOptions;
 		this.theme = options?.theme;
 		this.shikiOptions = options?.shikiOptions;
@@ -390,12 +385,16 @@ export class Carta {
 			plugin.transform({ processor: syncProcessor, carta: this });
 		}
 
-		syncProcessor.use(remarkRehype, rehypeOptions);
+		syncProcessor.use(remarkRehype, {
+			...rehypeOptions,
+			allowDangerousHtml: false
+		});
 
 		for (const plugin of rehypePlugins) {
 			plugin.transform({ processor: syncProcessor, carta: this });
 		}
 
+		syncProcessor.use(rehypeSanitize, defaultSchema);
 		syncProcessor.use(rehypeStringify);
 
 		return syncProcessor;
@@ -424,12 +423,16 @@ export class Carta {
 			await plugin.transform({ processor: asyncProcessor, carta: this });
 		}
 
-		asyncProcessor.use(remarkRehype, rehypeOptions);
+		asyncProcessor.use(remarkRehype, {
+			...rehypeOptions,
+			allowDangerousHtml: false
+		});
 
 		for (const plugin of rehypePlugins) {
 			await plugin.transform({ processor: asyncProcessor, carta: this });
 		}
 
+		asyncProcessor.use(rehypeSanitize, defaultSchema);
 		asyncProcessor.use(rehypeStringify);
 
 		return asyncProcessor;
@@ -456,7 +459,7 @@ export class Carta {
 		this.dispatcher.dispatchEvent(
 			new CustomEvent<{ carta: Carta }>('carta-render', { detail: { carta: this } })
 		);
-		return (this.sanitizer && this.sanitizer(dirty)) ?? dirty;
+		return dirty;
 	}
 
 	/**
@@ -470,7 +473,6 @@ export class Carta {
 		this.dispatcher.dispatchEvent(
 			new CustomEvent<{ carta: Carta }>('carta-render-ssr', { detail: { carta: this } })
 		);
-		if (this.sanitizer) return this.sanitizer(dirty);
 		return dirty;
 	}
 

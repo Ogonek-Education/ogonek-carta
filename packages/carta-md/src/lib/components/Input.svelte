@@ -1,58 +1,23 @@
-<!--
-	@component
-	A wrapped textarea component integrated with Carta. It handles the highlighting
-	and propagates events to the Carta instance.	
--->
-
 <script lang="ts">
-	import type { Carta } from '../carta';
-	import type { TextAreaProps } from '../textarea-props';
-	import { onMount, type Snippet } from 'svelte';
-	import { debounce } from '../utils';
-	import { BROWSER } from 'esm-env';
-	import { speculativeHighlightUpdate } from '../speculative';
+	import type { Carta } from '../internal/carta';
+	import { onMount } from 'svelte';
+	import { debounce } from '../internal/utils';
+	import type { HTMLAttributes } from 'svelte/elements';
+	import { browser } from '$app/environment';
+	import { speculativeHighlightUpdate } from '$lib/internal/speculative';
 
-	interface Props {
-		/**
-		 * The Carta instance to use.
-		 */
+	type Props = {
 		carta: Carta;
-		/**
-		 * The editor content.
-		 */
 		value: string;
-		/**
-		 * The placeholder text for the textarea.
-		 */
-		placeholder: string;
-		/**
-		 * The element of the wrapper div.
-		 */
 		elem: HTMLDivElement | undefined;
-		/**
-		 * Additional textarea properties.
-		 */
-		props: TextAreaProps;
-		/**
-		 * Whether this component is hidden (display: none).
-		 */
-		hidden: boolean;
-		/**
-		 * Highlight delay in milliseconds.
-		 */
-		highlightDelay: number;
-		children: Snippet;
-	}
+	} & HTMLAttributes<HTMLTextAreaElement>;
 
 	let {
 		carta,
 		value = $bindable(''),
-		placeholder = '',
 		elem = $bindable(),
-		props: textareaProps = {},
 		hidden = false,
-		children,
-		highlightDelay
+		...rest
 	}: Props = $props();
 
 	let textarea: HTMLTextAreaElement;
@@ -111,17 +76,13 @@
 		const html = highlighter.codeToHtml(text);
 		const timestamp = new Date().getTime();
 
-		if (carta.sanitizer) {
-			return { html: carta.sanitizer(html), timestamp };
-		} else {
-			return { html, timestamp };
-		}
+		return { html, timestamp };
 	}
 
 	/**
 	 * Debounced version of the highlight function.
 	 */
-	const debouncedHighlight = debounce(highlight, highlightDelay);
+	const debouncedHighlight = debounce(highlight);
 
 	/**
 	 * Returns the highlighted text using a speculative update.
@@ -184,7 +145,7 @@
 	);
 
 	$effect(() => {
-		if (BROWSER) onchange(value);
+		if (browser) onchange(value);
 	});
 
 	$effect(() => {
@@ -244,19 +205,13 @@
 			class="carta-font-code"
 			aria-multiline="true"
 			aria-describedby="editor-unfocus-suggestion-{simpleUUID}"
-			spellcheck={textareaProps.spellcheck === true}
 			tabindex="0"
-			{placeholder}
-			{...textareaProps}
 			bind:value
 			bind:this={textarea}
+			{...rest}
 			onscroll={() => (textarea.scrollTop = 0)}
 		></textarea>
 	</div>
-
-	{#if mounted}
-		{@render children()}
-	{/if}
 </div>
 
 <style>

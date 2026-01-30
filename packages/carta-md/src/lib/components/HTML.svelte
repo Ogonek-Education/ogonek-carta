@@ -4,15 +4,10 @@
 -->
 
 <script lang="ts">
-	interface Props {
-		html: string;
-		theme?: string;
-	}
-
-	let { html, theme = 'default' }: Props = $props();
+	let { html }: { html: string } = $props();
 </script>
 
-<div class="carta-viewer carta-theme__{theme} markdown-body">
+<div class="prose">
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html html}
 </div>

@@ -27,6 +27,7 @@
 		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
+		"@shikijs/rehype": "^3.4.0",
 		"@sveltejs/adapter-auto": "catalog:",
 		"@sveltejs/kit": "catalog:",
 		"@sveltejs/package": "catalog:",
@@ -37,18 +38,18 @@
 		"tailwindcss": "^4.1.18",
 		"tslib": "catalog:",
 		"typescript": "catalog:",
+		"shiki": "^3.21.0",
 		"vite": "catalog:"
 	},
 	"type": "module",
 	"dependencies": {
 		"@ogonek-education/ogonek-m3": "^0.0.32",
 		"diff": "^8.0.3",
-		"esm-env": "^1.2.2",
+		"rehype-sanitize": "^6.0.0",
 		"rehype-stringify": "^10.0.1",
 		"remark-gfm": "^4.0.1",
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.2",
-		"shiki": "^3.21.0",
 		"unified": "^11.0.5"
 	},
 	"keywords": [
