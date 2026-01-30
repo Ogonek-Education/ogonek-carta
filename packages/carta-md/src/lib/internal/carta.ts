@@ -1,4 +1,3 @@
-import type { Component } from 'svelte';
 import { unified, type Processor } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm, { type Options as GfmOptions } from 'remark-gfm';
@@ -15,7 +14,6 @@ import {
 import { defaultIcons, type Icon, type DefaultIconId } from './icons';
 import { defaultPrefixes, type DefaultPrefixId, type Prefix } from './prefixes';
 import { Renderer } from './renderer';
-import { CustomEvent, type MaybeArray } from './utils';
 import type {
 	Highlighter,
 	GrammarRule,
@@ -24,8 +22,8 @@ import type {
 	Theme,
 	HighlightingRule
 } from './highlight';
-import { BROWSER } from 'esm-env';
 import { defaultTabOuts, type DefaultTabOutId, type TabOut } from './tabouts';
+import { browser } from '$app/environment';
 
 /**
  * Carta-specific event with extra payload.
@@ -49,28 +47,8 @@ export type Listener<K extends CartaEventType | keyof HTMLElementEventMap> = [
 	) => unknown,
 	options?: boolean | AddEventListenerOptions
 ];
-/**
- * Custom Svelte component for extensions.
- */
-export interface ExtensionComponent<T extends object | undefined> {
-	/**
-	 * Svelte components that exports `carta: Carta` and all the other properties specified in `props`.
-	 */
-	component: Component<T & { carta: Carta }>;
-	/**
-	 * Properties that will be handed to the component.
-	 */
-	props: T;
-	/**
-	 * Where this component will be placed.
-	 */
-	parent: MaybeArray<'editor' | 'input' | 'renderer' | 'preview'>;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listeners = Listener<any>[];
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ExtensionComponents = Array<ExtensionComponent<any>>;
 
 /**
  * Carta editor options.
@@ -173,13 +151,6 @@ export interface Plugin {
 	 */
 	listeners?: Listeners;
 	/**
-	 * Additional components, that will be put after the editor.
-	 * All components are given a `carta: Carta` prop.
-	 * The editor has a `relative` position, so you can position
-	 * elements absolutely.
-	 */
-	components?: ExtensionComponents;
-	/**
 	 * Custom markdown grammar highlight rules for ShiKi.
 	 */
 	grammarRules?: GrammarRule[];
@@ -194,11 +165,7 @@ export interface Plugin {
 	onLoad?: (data: { carta: Carta }) => void;
 }
 
-const USE_HIGHLIGHTER =
-	BROWSER ||
-	// Replaced at build time to tree-shake shiki on the server, if specified
-	typeof __ENABLE_CARTA_SSR_HIGHLIGHTER__ === 'undefined' ||
-	__ENABLE_CARTA_SSR_HIGHLIGHTER__ === true;
+const USE_HIGHLIGHTER = browser;
 
 export class Carta {
 	public readonly historyOptions?: TextAreaHistoryOptions;
@@ -214,7 +181,6 @@ export class Carta {
 	public readonly highlightingRules: HighlightingRule[];
 	public readonly textareaListeners: Listeners;
 	public readonly cartaListeners: Listeners;
-	public readonly components: ExtensionComponents;
 	public readonly dispatcher = new EventTarget();
 	public readonly gfmOptions: GfmOptions | undefined;
 	public readonly syncProcessor: Processor;
@@ -274,7 +240,6 @@ export class Carta {
 		this.tabOuts = [];
 		this.textareaListeners = [];
 		this.cartaListeners = [];
-		this.components = [];
 		this.grammarRules = [];
 		this.highlightingRules = [];
 		this.rehypeOptions = options?.rehypeOptions ?? {};
@@ -284,7 +249,6 @@ export class Carta {
 			this.icons.push(...(ext.icons ?? []));
 			this.prefixes.push(...(ext.prefixes ?? []));
 			this.tabOuts.push(...(ext.tabOuts ?? []));
-			this.components.push(...(ext.components ?? []));
 			this.grammarRules.push(...(ext.grammarRules ?? []));
 			this.highlightingRules.push(...(ext.highlightingRules ?? []));
 

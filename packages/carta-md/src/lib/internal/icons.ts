@@ -1,21 +1,23 @@
-import type { Component } from 'svelte';
 import type { InputEnhancer } from './input';
+import type { IconProps } from '@ogonek-education/ogonek-m3';
 
-import HeadingIcon from './components/icons/HeadingIcon.svelte';
-import ItalicIcon from './components/icons/ItalicIcon.svelte';
-import BoldIcon from './components/icons/BoldIcon.svelte';
-import QuoteIcon from './components/icons/QuoteIcon.svelte';
-import LinkIcon from './components/icons/LinkIcon.svelte';
-import ListBulletedIcon from './components/icons/ListBulletedIcon.svelte';
-import ListNumberedIcon from './components/icons/ListNumberedIcon.svelte';
-import ListTaskIcon from './components/icons/ListTaskIcon.svelte';
-import CodeIcon from './components/icons/CodeIcon.svelte';
-import StrikethroughIcon from './components/icons/StrikethroughIcon.svelte';
+export const materialIcons = [
+	'strikethrough_s',
+	'format_h1',
+	'format_h2',
+	'format_h3',
+	'format_bold',
+	'format_italic',
+	'format_quote,',
+	'link',
+	'format_list_bulleted',
+	'format_list_numbered'
+];
 
 /**
  * Editor toolbar icon information.
  */
-export interface Icon {
+export interface CartaIcon {
 	/**
 	 * The icon's unique identifier.
 	 */
@@ -25,52 +27,43 @@ export interface Icon {
 	 * @param input InputEnhancer instance
 	 */
 	readonly action: (input: InputEnhancer) => void;
+	readonly icon: IconProps;
 	/**
-	 * The icon's component.
-	 */
-	readonly component: Component;
-	/**
-	 * The icon's label (used as aria-label).
+	 * The icon label (used as aria-label).
 	 */
 	readonly label?: string;
 }
 
 export const defaultIcons = [
 	{
-		id: 'heading',
+		id: 'title',
 		action: (input) => input.toggleLinePrefix('###'),
-		component: HeadingIcon as Component,
-		label: 'Heading'
+		icon: { name: 'format_h3' },
+		label: 'Title'
 	},
 	{
 		id: 'bold',
 		action: (input) => input.toggleSelectionSurrounding('**'),
-		component: BoldIcon as Component,
+		icon: { name: 'format_bold' },
 		label: 'Bold'
 	},
 	{
 		id: 'italic',
 		action: (input) => input.toggleSelectionSurrounding('*'),
-		component: ItalicIcon as Component,
+		icon: { name: 'format_italic' },
 		label: 'Italic'
 	},
 	{
 		id: 'strikethrough',
 		action: (input) => input.toggleSelectionSurrounding('~~'),
-		component: StrikethroughIcon as Component,
+		icon: { name: 'strikethrough_s' },
 		label: 'Strikethrough'
 	},
 	{
 		id: 'quote',
 		action: (input) => input.toggleLinePrefix('>'),
-		component: QuoteIcon as Component,
+		icon: { name: 'format_quote' },
 		label: 'Quote'
-	},
-	{
-		id: 'code',
-		action: (input) => input.toggleSelectionSurrounding('`'),
-		component: CodeIcon as Component,
-		label: 'Code'
 	},
 	{
 		id: 'link',
@@ -80,27 +73,21 @@ export const defaultIcons = [
 			input.insertAt(position, '(url)');
 			input.textarea.setSelectionRange(position + 1, position + 4);
 		},
-		component: LinkIcon as Component,
+		icon: { name: 'link' },
 		label: 'Link'
 	},
 	{
 		id: 'bulletedList',
 		action: (input) => input.toggleLinePrefix('- ', 'detach'),
-		component: ListBulletedIcon as Component,
+		icon: { name: 'format_list_bulleted' },
 		label: 'Bulleted list'
 	},
 	{
 		id: 'numberedList',
 		action: (input) => input.toggleLinePrefix('1. ', 'detach'),
-		component: ListNumberedIcon as Component,
+		icon: { name: 'format_list_numbered' },
 		label: 'Numbered list'
-	},
-	{
-		id: 'taskList',
-		action: (input) => input.toggleLinePrefix('- [ ] ', 'detach'),
-		component: ListTaskIcon as Component,
-		label: 'Task list'
 	}
-] as const satisfies readonly Icon[];
+] as const satisfies readonly CartaIcon[];
 
 export type DefaultIconId = (typeof defaultIcons)[number]['id'] | 'menu';

@@ -5,9 +5,9 @@
 -->
 
 <script lang="ts">
-	import type { Carta } from '../carta';
+	import type { Carta } from '$lib/internal';
 	import { onMount, type Snippet } from 'svelte';
-	import { debounce } from '../utils';
+	import { debounce } from '$lib/internal';
 
 	interface Props {
 		/**
@@ -30,14 +30,7 @@
 		onrender?: () => void;
 	}
 
-	let {
-		carta,
-		value,
-		elem = $bindable(),
-		hidden = false,
-		children,
-		onrender
-	}: Props = $props();
+	let { carta, value, elem = $bindable(), hidden = false, children, onrender }: Props = $props();
 
 	let mounted = $state(false);
 	let htmlContainer = $state<HTMLDivElement>();

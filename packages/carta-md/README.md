@@ -95,7 +95,7 @@ npm i @cartamd/plugin-name
 
 ```svelte
 <script lang="ts">
-	import { Carta, MarkdownEditor } from 'carta-md';
+	import { Carta, Editor } from 'carta-md';
 	// Component default theme
 	import 'carta-md/default.css';
 
@@ -104,7 +104,7 @@ npm i @cartamd/plugin-name
 	let value = $state('');
 </script>
 
-<MarkdownEditor bind:value {carta} />
+<Editor bind:value {carta} />
 
 <style>
 	/* Or in global stylesheet */

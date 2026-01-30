@@ -1,11 +1,8 @@
 <script lang="ts">
-	import type { Carta } from '../internal/carta';
-	import type { TextAreaProps } from '../internal/textarea-props';
+	import type { Carta } from '$lib/internal';
 	import { onMount } from 'svelte';
 	import { defaultLabels, type Labels } from '../internal/labels';
-	import Renderer from '../internal/components/Renderer.svelte';
-	import Input from '../internal/components/Input.svelte';
-	import Toolbar from '../internal/components/Toolbar.svelte';
+	import { Renderer, Input, Toolbar } from '$lib/components';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	type Props = {

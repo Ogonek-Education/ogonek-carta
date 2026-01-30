@@ -8,3 +8,4 @@ export * from './carta';
 export * from './highlight';
 export * from './textarea-props';
 export * from './labels';
+export * from './utils';

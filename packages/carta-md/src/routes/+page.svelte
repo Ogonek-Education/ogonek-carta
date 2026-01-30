@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MarkdownEditor } from '$lib';
+	import { Editor } from '$lib/components';
 	import { Carta } from '$lib/internal/carta';
 	import ToggleTheme from './ToggleTheme.svelte';
 	import sampleText from './sample.md?raw';
@@ -10,5 +10,5 @@
 
 <main class="">
 	<ToggleTheme />
-	<MarkdownEditor value={sampleText} placeholder="Some text..." mode="split" {carta} />
+	<Editor value={sampleText} placeholder="Some text..." {carta} />
 </main>
